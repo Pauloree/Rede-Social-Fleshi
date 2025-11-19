@@ -10,7 +10,17 @@
 </head>
 {% block body %}
 <body>
-        <h1>Fléshi</h1>
+    <h1>Fléshi</h1>
+    <form method="POST">
+        {{ form.csrf_token }}
+            {{ form.email.label() }}
+            {{ form.email() }}
+
+            {{ form.password.label() }}
+            {{ form.password() }}
+
+            {{ form.submit() }}
+    </form>
 </body>
 {% endblock %}
 </html>
