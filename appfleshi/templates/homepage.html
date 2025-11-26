@@ -5,22 +5,24 @@
     <title>
         {% block title %}
             Fléshi
-        {% endblock %}
-    </title>
+        {% endblock %}</title>
 </head>
 {% block body %}
 <body>
     <h1>Fléshi</h1>
-    <form method="POST">
+
+    {% block form %}
+        <form method="post">
         {{ form.csrf_token }}
-            {{ form.email.label() }}
-            {{ form.email() }}
+        {{ form.email.label() }}
+        {{ form.email() }}
 
-            {{ form.password.label() }}
-            {{ form.password() }}
+        {{ form.password.label() }}
+        {{ form.password() }}
 
-            {{ form.submit() }}
-    </form>
+        {{ form.submit() }}
+        </form>
+    {% endblock %}
 </body>
 {% endblock %}
 </html>
