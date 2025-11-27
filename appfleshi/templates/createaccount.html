@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block form %}
-<form method="post">
-    {{ form.csrl_token }}
+<form method="POST">
+    {{ form.csrf_token }}
     {{ form.email.label() }}
     {{ form.email() }}
 
