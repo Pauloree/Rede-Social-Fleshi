@@ -16,7 +16,7 @@ def homepage():
         user = User.query.filter_by(email=login_form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, login_form.password.data ):
             login_user(user)
-            return redirect(url_for('profile', user_id=user.id))
+            return redirect(url_for('feed'))
     return render_template('homepage.html', form=login_form)
 
 @app.route('/createaccount', methods=['GET', 'POST'])
@@ -39,17 +39,11 @@ def profile(user_id):
 
         if photo_form.validate_on_submit():
             file = photo_form.photo.data
-
             secure_name = secure_filename(file.filename)
-
             path = os.path.join(os.path.abspath(os.path.dirname(__file__)), app.config['UPLOAD_FOLDER'], secure_name)
-
             file.save(path)
-
             photo = Photo(file_name=secure_name, user_id=current_user.id)
-
             database.session.add(photo)
-
             database.session.commit()
 
         return render_template('profile.html', user=current_user, form=photo_form)
