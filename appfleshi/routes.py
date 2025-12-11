@@ -1,7 +1,7 @@
 from flask import render_template, url_for, redirect
 from flask_login import login_required, login_user, logout_user, current_user
 from appfleshi import app, database, bcrypt
-from appfleshi.forms import LoginForm, RegisterForm, PhotoForm
+from appfleshi.forms import LoginForm, RegisterForm, PhotoForm, searchUserForm
 from appfleshi.models import User, Photo
 import os
 from werkzeug.utils import secure_filename
@@ -63,3 +63,15 @@ def feed():
     photos = Photo.query.order_by(Photo.upload_date.desc()).all()
 
     return render_template("feed.html", photos=photos)
+
+@app.route("/search", methods=['GET', 'POST'])
+@login_required
+def search():
+    searchForm = searchUserForm()
+    results = []
+    if searchForm.validate_on_submit():
+        searchData = searchForm.username.data
+
+        results = User.query.filter(User.username.contains(f'%{searchData}')).all()
+
+    return render_template('search.html', results=results, form=searchForm)

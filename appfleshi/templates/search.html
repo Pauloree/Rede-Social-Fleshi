@@ -1,0 +1,17 @@
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.username(class="form-control", placeholder="Digite o nome...") }}
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+
+    {% if results %}
+        <h3>Usuários encontrados:</h3>
+        <ul>
+            {% for user in results %}
+                <li style="list-style:none;"><a href="{{ url_for('profile', user_id=user.id) }}">{{ user.username }}</a></li>
+            {% endfor %}
+        </ul>
+    {% elif form.is_submitted() %}
+        <p>Nenhum usuário encontrado.</p>
+    {% endif %}

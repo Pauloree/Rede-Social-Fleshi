@@ -36,3 +36,7 @@ class RegisterForm(FlaskForm):
         if user:
             raise ValidationError("Nome de usúario já cadastrado. Por favor, use outro e-mail ou faça login.")
         return None
+
+class searchUserForm(FlaskForm):
+    username = StringField('Pesquisar Usuário', validators=[DataRequired()])
+    submit = SubmitField('Buscar')
