@@ -1,17 +1,39 @@
+{% extends "homepage.html" %}
 
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        {{ form.username(class="form-control", placeholder="Digite o nome...") }}
-        {{ form.submit(class="btn btn-primary") }}
-    </form>
+{% block title %}
+    Fléshi - Pesquisar
+{% endblock %}
 
-    {% if results %}
-        <h3>Usuários encontrados:</h3>
-        <ul>
-            {% for user in results %}
-                <li style="list-style:none;"><a href="{{ url_for('profile', user_id=user.id) }}">{{ user.username }}</a></li>
-            {% endfor %}
-        </ul>
-    {% elif form.is_submitted() %}
-        <p>Nenhum usuário encontrado.</p>
-    {% endif %}
+{% block body %}
+    {% include "navbar.html" %}
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 custom-card">
+                <h2 class="mb-4">Encontrar Usuários</h2>
+
+                <form method="POST" class="d-flex gap-2 mb-4">
+                    {{ form.hidden_tag() }}
+                    {{ form.username(class="form-control form-control-lg", placeholder="Digite o nome do usuário...") }}
+                    {{ form.submit(class="btn btn-primary px-4") }}
+                </form>
+
+                {% if results %}
+                    <h4 class="mb-3">Resultados:</h4>
+                    <div class="list-group">
+                        {% for user in results %}
+                            <a href="{{ url_for('profile', user_id=user.id) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                {{ user.username }}
+                                <span class="badge bg-primary rounded-pill">Ver perfil</span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% elif form.is_submitted() %}
+                    <div class="alert alert-warning" role="alert">
+                        Nenhum usuário encontrado com esse nome.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

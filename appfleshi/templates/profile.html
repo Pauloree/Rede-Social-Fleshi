@@ -1,28 +1,56 @@
 {% extends "homepage.html" %}
 
 {% block title %}
-    Perfil - {{ username }}
+    Perfil - {{ user.username }}
 {% endblock %}
 
 {% block body %}
-    <body>
     {% include "navbar.html" %}
-        <h1>Perfil do usuário: {{ user.username }}</h1>
 
-        {% if form %}
-        <form method="POST" enctype="multipart/form-data">
-            {{ form.csrf_token }}
+    <div class="container">
+        <div class="custom-card mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-6">@{{ user.username }}</h1>
+                    <p class="text-muted">Perfil do usuário</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    {% if current_user.id == user.id %}
+                        <a href="{{url_for('logout')}}" class="btn btn-outline-danger btn-sm">Sair da Sessão</a>
+                    {% endif %}
+                </div>
+            </div>
 
-            {{ form.photo() }}
-            {{ form.submit() }}
-        </form>
-        {% endif %}
+            {% if form %}
+            <hr>
+            <div class="mt-3 p-3 bg-light rounded">
+                <h5>Nova publicação</h5>
+                <form method="POST" enctype="multipart/form-data" class="row g-3">
+                    {{ form.csrf_token }}
+                    <div class="col-auto">
+                        {{ form.photo(class="form-control") }}
+                    </div>
+                    <div class="col-auto">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+        </div>
 
-        <a href="{{url_for('logout')}}">Sair da Sessão</a>
-
-
-        {% for photo in user.photos %}
-             <img src="{{ url_for('static', filename='post_photos/'~ photo.file_name) }}"alt="''">
-        {%  endfor %}
-    </body>
+        <h3 class="mb-3">Publicações</h3>
+        <div class="row g-4">
+            {% for photo in user.photos %}
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card border-0 shadow-sm">
+                        <img src="{{ url_for('static', filename='post_photos/'~ photo.file_name) }}" class="gallery-img" alt="Foto de {{ user.username }}">
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <p class="text-muted">Este usuário ainda não postou fotos.</p>
+                </div>
+            {%  endfor %}
+        </div>
+    </div>
 {% endblock %}

@@ -2,36 +2,125 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
         {% block title %}
             Fléshi
-        {% endblock %}</title>
+        {% endblock %}
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* CORES SUAVES E ESTILO GERAL */
+        body {
+            background-color: #f0f2f5; /* Fundo cinza suave */
+            color: #5f6368;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h1, h2, h3 {
+            color: #4a4e69; /* Tom de roxo/azul escuro suave */
+            font-weight: 600;
+        }
+
+        /* Estilo dos Cartões (Login, Posts, Forms) */
+        .custom-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 2rem;
+            margin-bottom: 20px;
+            border: none;
+        }
+
+        /* Botões Suaves */
+        .btn-primary {
+            background-color: #74b9ff; /* Azul pastel */
+            border-color: #74b9ff;
+            border-radius: 10px;
+            padding: 10px 20px;
+        }
+        .btn-primary:hover {
+            background-color: #0984e3;
+            border-color: #0984e3;
+        }
+
+        /* Inputs do formulário */
+        .form-control {
+            background-color: #fdfeff;
+            border-radius: 10px;
+            border: 1px solid #dfe6e9;
+            padding: 12px;
+        }
+
+        /* Navbar */
+        .navbar-custom {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        .navbar-brand {
+            color: #74b9ff !important;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        /* Imagens */
+        .feed-img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+        .gallery-img:hover {
+            transform: scale(1.02);
+        }
+    </style>
 </head>
-{% block body %}
+
 <body>
-    <h1>Fléshi</h1>
+    {% block body %}
+    <div class="container d-flex flex-column justify-content-center align-items-center" style="min-height: 100vh;">
+        <div class="col-md-5 custom-card text-center">
+            <h1 class="mb-4">Fléshi</h1>
 
-    {% block form %}
-        <form method="post">
-        {{ form.csrf_token }}
-        {{ form.email.label() }}
-        {{ form.email() }}
+            {% block form %}
+                <form method="post">
+                    {{ form.csrf_token }}
 
-            {% if form.email.errors %}
-        {% for erro in form.email.errors %}
-            <p class="alert alert-danger" role="alert">{{erro}}</p>
-        {%  endfor%}
-    {% endif %}
+                    <div class="mb-3 text-start">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control") }}
+                        {% if form.email.errors %}
+                            {% for erro in form.email.errors %}
+                                <div class="text-danger small">{{erro}}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
 
+                    <div class="mb-3 text-start">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control") }}
+                    </div>
 
-        {{ form.password.label() }}
-        {{ form.password() }}
-
-        {{ form.submit() }}
-        </form>
-    <a href="{{ url_for('createaccount') }}">Não tem uma conta? Cadastre-se</a>
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                    </div>
+                </form>
+                <hr class="my-4">
+                <a href="{{ url_for('createaccount') }}" class="text-decoration-none" style="color: #74b9ff;">Não tem uma conta? Cadastre-se</a>
+            {% endblock %}
+        </div>
+    </div>
     {% endblock %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-{% endblock %}
 </html>
